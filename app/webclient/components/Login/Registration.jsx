@@ -25,6 +25,8 @@ import Divider from 'material-ui/Divider';
 import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
 import ActionFavorite from 'material-ui/svg-icons/action/favorite';
 import ActionFavoriteBorder from 'material-ui/svg-icons/action/favorite-border';
+import Dialog from 'material-ui/Dialog';
+import restUrl from '../restUrl';
 export default class Registration extends React.Component{
 
     state={
@@ -33,8 +35,19 @@ export default class Registration extends React.Component{
        emailID:"",
        address:"",
        jioPassword:"",
-       lender:''
+       lender:'',
+       open: false,
+       regData:{}
       }
+     
+    
+    //   dhandleOpen = () => {
+    //     this.setState({open: true});
+    //   };
+    
+      dhandleClose = () => {
+        this.setState({open: false});
+      };
 
       handleClose = () => this.setState({openDrawer: false});
       handleToggle = () => this.setState({openDrawer: !this.state.openDrawer});
@@ -51,7 +64,34 @@ export default class Registration extends React.Component{
        jioPassword:this.state.jioPassword,
        roleType:this.state.lender
         }
+       
         console.log(obj);
+        Axios({
+            method:'post',
+            url:restUrl+'/api/registration',
+            data:obj
+            })
+            .then((data) => {
+                console.log(data);
+                if(data.data=="success"){
+                    this.setState({regData:obj});
+                   this.setState({open:true})
+
+                }else{
+                    alert('Server Issue, Try Again after some Time')
+                }
+                
+            // console.log('new trade connected to server for post is');
+            // console.log(data.data);
+            // alert('Transaction hash for new trade is'+ data.data);
+            // this.context.router.push('/tradeRecap');
+                   
+            })
+            .catch((error) => {
+            console.log(error);
+            console.log(error+"error in new Trade");
+            });
+            
       }
 
       radioChange=(e,value)=>{
@@ -59,6 +99,14 @@ export default class Registration extends React.Component{
       }
 
     render(){
+
+        const actions = [
+            <FlatButton
+              label="Close"
+              primary={true}
+              onClick={this.dhandleClose}
+            />
+          ];
 
         return(
             <div className="background" style={{height:"auto"}}>
@@ -172,6 +220,22 @@ export default class Registration extends React.Component{
          
         
           </Grid> 
+          <Dialog
+          title="Registration Succesfull"
+          actions={actions}
+          modal={true}
+          open={this.state.open}
+        >
+        <Divider />
+       <p>
+          Hello {" " +this.state.name},
+          Welcome to Jio Microlending Platform,
+          Kindly note down your Registration ID:<b>{ " " +this.state.regData.regId} </b>
+          for login into the sytem.
+          
+          </p>
+          <Divider />
+        </Dialog>
           </div>
         )
     }

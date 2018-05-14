@@ -25,6 +25,7 @@ import Divider from 'material-ui/Divider';
 import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
 import ActionFavorite from 'material-ui/svg-icons/action/favorite';
 import ActionFavoriteBorder from 'material-ui/svg-icons/action/favorite-border';
+import restUrl from '../restUrl';
 
 const userInfo=[
     {
@@ -187,22 +188,45 @@ export default class Login extends React.Component {
   loginClick=()=>{
     
 
-    userInfo.forEach((data)=>{
-      if(data.username==this.state.username && data.password==this.state.password){
-        alert('Successfully Login');
-        sessionStorage.setItem('userLoginDetails',JSON.stringify(data));
-        if(data.roleType=="Lender" ){
-        this.context.router.push('/');
-        }else if(data.roleType=="Auditor"){
-          this.context.router.push('/Audit');
-        }else if(data.roleType=="Borrower" ){
-          this.context.router.push('/'); 
-        }
-      }
+    // userInfo.forEach((data)=>{
+    //   if(data.username==this.state.username && data.password==this.state.password){
+    //     alert('Successfully Login');
+    //     sessionStorage.setItem('userLoginDetails',JSON.stringify(data));
+    //     if(data.roleType=="Lender" ){
+    //     this.context.router.push('/');
+    //     }else if(data.roleType=="Auditor"){
+    //       this.context.router.push('/Audit');
+    //     }else if(data.roleType=="Borrower" ){
+    //       this.context.router.push('/'); 
+    //     }
+    //   }
+    // })
+    let obj={
+      name:this.state.username,
+      password:this.state.password
+    }
+
+    Axios({
+      method:'post',
+      url:restUrl+'/api/login',
+      data:obj
     })
-    // sessionStorage.setItem('userLoginDetails',JSON.stringify(userLoginDetails));
-    //  let retrievedUserDetails= JSON.parse(sessionStorage.getItem('userLoginDetails'));
-    // console.log(retrievedUserDetails);
+    .then((data) => {
+     console.log(data)
+      
+      if(data.data.response=="Succes"){
+        sessionStorage.setItem('userLoginDetails',JSON.stringify(data.data));
+        this.context.router.push('/');
+      }else{
+        alert('login Failed');
+      }
+  
+    })
+    .catch((error) => {
+      console.log(error);
+      console.log(error+"error in Login data for post");
+    });
+   
   }
 
   navigationLandingPage=()=>{
@@ -225,25 +249,10 @@ export default class Login extends React.Component {
   }
 
 
-  // ------------------Registeration Function-----------------
 
- 
-
- 
-
- 
-  // End -------------------------Registration
 
   render() {
-    /*console.log("----Session ID Login----");
-    sessionStorage.setItem("userId", "A100");
-    sessionStorage.setItem("emailId", "jitendra.chauhan2@wipro.com");
-    let id =sessionStorage.getItem("userId");
-    let emailid =sessionStorage.getItem("emailId");
-    console.log(id);
-    console.log(emailid);*/
-
-      //  ------------------------------------Login----------------------------
+  
      return(
       <div className="background">
       <AppBar

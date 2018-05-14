@@ -35,7 +35,7 @@ export default class DefaulterList extends React.Component{
             <Table striped bordered condensed hover style={{marginTop:"5px"}}>
             <thead style={{backgroundColor:"rgb(0, 188, 212)", color:"white"}}>
               <tr>
-                <th>Index</th>
+               
                 <th>Contract ID</th>
                 <th>Amount</th>
                 <th>Balance Amount</th>

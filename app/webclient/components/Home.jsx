@@ -79,7 +79,11 @@ const defaultData=[
 export default class Home extends React.Component {
   
   render() {
-  
+
+    let retrievedUserDetails= JSON.parse(sessionStorage.getItem('userLoginDetails'));
+    let lenderInfo;
+    if(retrievedUserDetails.roleType=="Borrower"){
+      
       return (
         <div style={{marginTop:"40px"}} className="homeBackground">
        <Grid>
@@ -100,12 +104,37 @@ export default class Home extends React.Component {
            
            
              <center>
-             <h4 style={{color:"white"}} > Active Profile Summary</h4>
+             <h4 style={{color:"white"}} > Active Loan Summary</h4>
              </center>
           <Paper>
            <ActiveSummary summaryData={summaryData}/>
            </Paper>
          
+           
+          
+        
+     
+
+         </Grid>
+       
+          </div>
+      )
+
+       
+    }else{
+       
+      return (
+        <div style={{marginTop:"40px"}} className="homeBackground">
+       <Grid>
+
+         
+           <Balance />   
+           <Row>
+             </Row>
+
+          
+           <Transaction />
+          
            
            <Row>
              </Row>
@@ -114,18 +143,34 @@ export default class Home extends React.Component {
            
            
              <center>
+             <h4 style={{color:"white"}} > Active Lending Summary</h4>
+             </center>
+          <Paper>
+           <ActiveSummary summaryData={summaryData}/>
+           </Paper>
+         
+           
+          
+           
+           
+             <center>
              <h4 style={{color:"white"}} > Default Loan Summary</h4>
              </center>
           <Paper>
            <DefaulterList defaultData={defaultData}/>
            </Paper>
+            {/* <Paper>
+           <ActiveSummary summaryData={summaryData}/>
+           </Paper> */}
          
 
          </Grid>
        
           </div>
       )
-    }
+
+    }  
+      }
   }
 
 

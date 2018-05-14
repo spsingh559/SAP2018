@@ -42,9 +42,7 @@ export default class EachSummaryData extends React.Component{
         
         return(
             <tr>
-                <td>
-                    {this.props.i}
-                    </td>
+               
                     <td>
                         <a onTouchTap={this.contractID}>
                     {this.props.data.contractID}

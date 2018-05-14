@@ -8,21 +8,46 @@ import Delete from 'material-ui/svg-icons/action/delete'
 import Paper from 'material-ui/Paper';  
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
+import Dialog from 'material-ui/Dialog';
+import FlatButton from 'material-ui/FlatButton';
+import Divider from 'material-ui/Divider';
+// import RaisedButton from 'material-ui/RaisedButton';
 
-export default class CreateRequest extends React.Component{
+
+const customContentStyle = {
+    width: '100%',
+    maxWidth: 'none',
+    borderRadius:"10px"
+  };
+
+export default class ApplyLoan extends React.Component{
 
     state={
         amount:"",
         days:"",
         ppd:"",
         successStatus:false,
-        newRequestStatus:false
+        newRequestStatus:false,
+        open: false,
     }
+    
+      handleOpen = () => {
+        this.setState({open: true});
+      };
+    
+      handleClose = () => {
+        this.setState({open: false});
+      };
+      handleOk=()=>{
+        this.setState({open: false});
+        this.setState({successStatus:true,newRequestStatus:true});
+      }
 
     createRequest=()=>{
-        this.setState({successStatus:true,newRequestStatus:true});
+        this.setState({open:true})       
 
     }
+
     goBack=()=>{
         let retrievedUserDetails= JSON.parse(sessionStorage.getItem('userLoginDetails'));
         if(retrievedUserDetails.roleType=="Lender"){
@@ -47,7 +72,31 @@ export default class CreateRequest extends React.Component{
     }
 
     render(){
+        let title=<div style={{height:"50px", width:"100%", backgroundColor:"black", color:"white", textAlign:"center", padding:"10px 0px"}}>Loan Confirmation 
+          </div>
+        
+
+        const actions = [
+            <div>
+                <Divider />
+            <FlatButton
+              label="Are you Ok?"
+              primary={true}
+              onClick={this.handleOk}
+            />
+            <FlatButton
+              label="No Cancel It"
+              primary={true}
+              onClick={this.handleClose}
+            />
+            </div>
+          ];
+
 let successStatusView;
+
+let calculateLoanAmount;
+let amountBalance= this.state.amount/100;
+let payAmount=amountBalance*this.props.params.ppd*this.state.days;
 
 if(this.state.successStatus==true){
     successStatusView=[
@@ -55,7 +104,7 @@ if(this.state.successStatus==true){
     <Paper zDepth={1} style={{fontSize:"14pt", marginTop:"30px", }}>
     <div>
     Mr {" "} BR12309123,
-    Your Loan Request LR3212345 has been created for {this.state.amount} Rs  with rate of {' '} {this.state.ppd} ppdh for {" "} {this.state.days} Days. 
+    Your Loan Request LR3212345 has been created for {this.state.amount} Rs  with rate of {' '} {this.props.params.ppd} ppdh for {" "} {this.state.days} Days. 
     </div>
     <div style={{backgroundColor:"rgb(0, 188, 212)", color:"white", height:"50px", padding:"10px 2px"}}
      onTouchTap={this.deleteRequest}>
@@ -96,11 +145,12 @@ if(this.state.newRequestStatus==true){
         return(
             <div style={{marginTop:"60px", backgroundColor:"#F1F1ED", height:"100%"}}>
             <div style={{backgroundColor:"black", color:"white", height:"70px", padding:"10px 5px"}}>
-                <center> <h3> <span onTouchTap={this.goBack}><ActionHome color="white" style={{marginRight:"10px"}} /></span>Create Loan Request </h3> </center>
+                <center> <h3> <span onTouchTap={this.goBack}><ActionHome color="white" style={{marginRight:"10px"}} /></span>Loan Request </h3> </center>
           </div>
 <Grid>
            <Paper zDepth={1} style={{fontSize:"14pt",marginTop:"10px", }}>
-           <div style={{padding:"0px 5px"}}> Hi There, </div>
+           <div style={{padding:"0px 5px"}}> Hi  {this.props.params.lenderID} ,
+        </div>
            <div  style={{padding:"0px 5px"}}>
                I want a loan of {" "}{" "}
                <TextField
@@ -118,10 +168,8 @@ if(this.state.newRequestStatus==true){
     />
     Days with rate of  {" "}{" "}
     <TextField
-      
-      hintText="Enter PPDPH"
-      floatingLabelText="Enter Rate"
-      onChange = {(event,newValue) => this.setState({ppd:newValue})}
+      value={this.props.params.ppd}
+      disabled={true}
     />
      <div style={{backgroundColor:"rgb(0, 188, 212)", color:"white", height:"50px", padding:"10px 2px"}}
      onTouchTap={this.createRequest}>
@@ -136,6 +184,20 @@ if(this.state.newRequestStatus==true){
 
            </Paper>
            <br />
+           <Dialog
+          title={title}
+          actions={actions}
+          modal={true}
+          contentStyle={customContentStyle}
+          open={this.state.open}
+          autoDetectWindowHeight={true}
+        >
+         <div style={{marginTop:"10px"}}>
+           Total Coin to be paid after {this.state.days} days with rate of {this.props.params.ppd} is : {payAmount} Coin
+          
+           </div>
+        </Dialog>
+          
 </Grid>
                 </div>
         )

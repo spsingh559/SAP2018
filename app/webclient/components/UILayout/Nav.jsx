@@ -107,14 +107,24 @@ export default class Nav extends React.Component{
      let textBid;
      let textUser;
      let txtUrl;
+     let loanUrl;
+     let loanTxt;
+     let userRole;
      if(retrievedUserDetails.roleType=="Lender"){
-      textBid="Open Loan Request";
+      textBid="";
       textUser="Lender";
       txtUrl="/openRequest";
-     }else{
+      loanUrl="/poolList";
+      loanTxt="Borrower List",
+      userRole="Lender";
+      
+     }else {
       textBid="Create Loan Request";
       textUser="Borrower"
       txtUrl="/createRequest"
+      loanUrl="/poolList";
+      loanTxt="Lender List";
+      userRole="Borrower";
      }
      if(retrievedUserDetails.roleType=="Lender" || retrievedUserDetails.roleType=="Borrower"){
         	return(
@@ -149,13 +159,17 @@ export default class Nav extends React.Component{
         <Image src="../../images/profile.jpg" 
         style={{width:'100px',height:'100px'}} circle/>
         </center>
-        <center style={{fontWeight:'bold',fontSize:16}}>User Name</center>
+        <center style={{fontWeight:'bold',fontSize:16}}>{userRole}</center>
         <Divider />
           <MenuItem onTouchTap={this.handleClose}>
            <Link to="/"> Home </Link>
           </MenuItem>
-          <MenuItem onTouchTap={this.handleClose}>
+          {textBid==""?null:<MenuItem onTouchTap={this.handleClose}>
            <Link to={txtUrl}> {textBid} </Link>
+          </MenuItem>}
+          
+          <MenuItem onTouchTap={this.handleClose}>
+          <Link to ={loanUrl}>{loanTxt}</Link>
           </MenuItem>
           <MenuItem onTouchTap={this.handleClose}>
           <Link to ="/pRequest">Pending Request</Link>

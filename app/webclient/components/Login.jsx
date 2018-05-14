@@ -101,7 +101,8 @@ export default class Login extends React.Component {
         otpWindowStatus:false,
         otp:'',
         registerViewStatus:false,
-        jioPassword:''
+        jioPassword:'',
+        lender:"Lender"
     }
     this.handleUsername=this.handleUsername.bind(this);
     this.handlePassword=this.handlePassword.bind(this);
@@ -195,7 +196,7 @@ export default class Login extends React.Component {
         }else if(data.roleType=="Auditor"){
           this.context.router.push('/Audit');
         }else if(data.roleType=="Borrower" ){
-          this.context.router.push('/borrower'); 
+          this.context.router.push('/'); 
         }
       }
     })
@@ -223,6 +224,9 @@ export default class Login extends React.Component {
     this.setState({loginStatus:false,registerStatus:false});
   }
 
+  radioChange=(e,value)=>{
+    this.setState({lender:value});
+  }
   // ------------------Registeration Function-----------------
 
   aadharLink=()=>{
@@ -235,7 +239,7 @@ export default class Login extends React.Component {
   }
 
   registerSuccess=()=>{
-    alert('Registration Successful');
+    alert(this.state.lender);
     this.setState({loginStatus:true});
   }
   // End -------------------------Registration
@@ -303,6 +307,7 @@ export default class Login extends React.Component {
       inputStyle={{color:"white"}}
       hintStyle={{color:"white"}}
       floatingLabelStyle={{color:"white"}}
+      type="password"
       onChange = {(event,newValue) => this.setState({password:newValue})}
       floatingLabelText="Enter Password"
     /><br />
@@ -324,20 +329,24 @@ export default class Login extends React.Component {
     //     <Grid>
     //     <Row style={{marginRight: "-10px",
     // marginLeft: "-10px"}}>
-        <Paper zDepth={2} style={{marginTop:"10px"}}>
+        <div  style={{marginTop:"10px"}}>
           <p>
             OTP has sent to your register Mobile Number. Verfiy it
             </p>
-            <br />
+           
             <TextField
-      
+       hintStyle={{color:"white"}}
+       inputStyle={{color:"white"}}
+       floatingLabelStyle={{color:"white"}}
       hintText="Enter OTP"
       floatingLabelText="OTP"
       onChange = {(event,newValue) => this.setState({otp:newValue})}
+      fullWidth={true}
     />
-    <br />
+    <center>
     <RaisedButton label="Verify OTP" primary={true}  onTouchTap={this.otpVerify}/>
-          </Paper>
+    </center>
+          </div>
           // </Row>
           // </Grid>
       ]
@@ -356,35 +365,44 @@ export default class Login extends React.Component {
     //     <Grid>
     //  <Row style={{marginRight: "-10px",
     // marginLeft: "-10px"}}>
-      <Paper zDepth={2} style={{marginTop:"10px"}}>
-        <h5> Registration Id Genrated Successfully</h5>
-        <h6> S32432134 </h6>
+      <div zDepth={2} style={{marginTop:"10px"}}>
+      <center>
+        <h4> Registration Id Genrated Successfully</h4>
+        <h5> S32432134 </h5>
+      </center>
         <br />
-        <RadioButtonGroup name="shipSpeed" defaultSelected="Lender">
+        <RadioButtonGroup name="shipSpeed" defaultSelected={this.state.lender} onChange={this.radioChange}>
       <RadioButton
+      labelStyle={{color:"white"}}
         value="Lender"
         label="Lender"
-
+        iconStyle={{color:"white"}}
       />
+      
       <RadioButton
+       labelStyle={{color:"white"}}
         value="Borrower"
         label="Borrower"
+        iconStyle={{color:"white"}}
        />
       </RadioButtonGroup>
   <br />
   <div style={{align:"left"}}>
   <TextField
+   hintStyle={{color:"white"}}
+   inputStyle={{color:"white"}}
+   floatingLabelStyle={{color:"white"}}
       hintText=" Set Password"
-      type="password"
       onChange = {(event,newValue) => this.setState({jioPassword:newValue})}
       floatingLabelText="Set password"
+      fullWidth={true}
     />
     <br />
     <br />
-    <RaisedButton label="Submit" primary={true}  onTouchTap={this.registerSuccess}/>
+    <RaisedButton style={{borderRadius:'13px'}} label="Submit" primary={true}  onTouchTap={this.registerSuccess} fullWidth={true}/>
     </div> 
 
-      </Paper>
+      </div>
       // </Row>
       // </Grid>
       ]
@@ -427,21 +445,28 @@ onLeftIconButtonTouchTap={this.handleToggle}
     <Grid>
       
       
-    <Row style={{marginTop: '50px',color:"white"}}>
-    <Paper zDepth={2} style={{marginTop:"10px"}} >
+    <div style={{marginTop: '50px',color:"white"}}>
+    
    <TextField
- 
+ hintText="User Name"
+ hintStyle={{color:"white"}}
+ inputStyle={{color:"white"}}
+ floatingLabelStyle={{color:"white"}}
  hintText="Enter Aadhar Number"
  floatingLabelText="Enter Aadhar Number"
  onChange = {(event,newValue) => this.setState({aadhar:newValue})}
-/><br />
-<RaisedButton label="Enter for Verfication" primary={true}  onTouchTap={this.aadharLink}/>
-</Paper>
+ fullWidth={true}
+/>
+<center>
+
+<RaisedButton label=" Verfiy" primary={true}  onTouchTap={this.aadharLink}/>
+</center>
+
 {otpMessage}
 {regisView}
 
  
-  </Row>
+  </div>
   
   </Grid> 
   </div>

@@ -13,7 +13,7 @@ injectTapEventPlugin();
 
 import Home from './components/Home.jsx';
 import ParentComponent from './components/UILayout/Parent.jsx';
-import Login from './components/Login.jsx';
+import Login from './components/Login/Login';
 import Audit from './components/Audit/Audit';
 import PlatformActivity from './components/PlatformActivity/PlatformActivity';
 import OpenRequest from './components/OpenRequest/OpenRequest';
@@ -26,14 +26,17 @@ import ConfirmRequest from './components/ConfirmRequest/ConfirmRequest';
 import {Route, Router, IndexRoute, hashHistory} from 'react-router';
 import TxHistory from './components/TxHistory/TxHistory';
 import Profile from './components/Profile/Profile';
+import Landing from './components/Login/Landing';
+import Verification from './components/Login/Verification';
+import Registration from './components/Login/Registration';
+
 ReactDOM.render(
 	<MuiThemeProvider>
 	<Router history ={hashHistory} >
 	<Route path="/login" component={Login} />
-	
-	
-	
-	
+	<Route path="/landing" component={Landing} />
+	<Route path="/verification" component={Verification} />
+	<Route path="/register" component={Registration} />	
 	<Route path="/" component={ParentComponent}>
 	<Route path="/audit" component={Audit} />
 	<Route path="/platformActivity" component={PlatformActivity} />
@@ -46,6 +49,7 @@ ReactDOM.render(
 	<Route path="/cRequest" component={ConfirmRequest} />
 	<Route path="/txHistory" component={TxHistory} />
 	<Route path="/myProfile" component={Profile} />
+	{/* <Route path="/myProfile" component={Profile} /> */}
 	
 	
 

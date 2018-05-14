@@ -224,24 +224,14 @@ export default class Login extends React.Component {
     this.setState({loginStatus:false,registerStatus:false});
   }
 
-  radioChange=(e,value)=>{
-    this.setState({lender:value});
-  }
+
   // ------------------Registeration Function-----------------
 
-  aadharLink=()=>{
-    console.log(this.state.aadhar);
-    this.setState({otpWindowStatus:true});
-  }
+ 
 
-  otpVerify=()=>{
-    this.setState({otpWindowStatus:false, registerViewStatus:true});
-  }
+ 
 
-  registerSuccess=()=>{
-    alert(this.state.lender);
-    this.setState({loginStatus:true});
-  }
+ 
   // End -------------------------Registration
 
   render() {
@@ -252,8 +242,7 @@ export default class Login extends React.Component {
     let emailid =sessionStorage.getItem("emailId");
     console.log(id);
     console.log(emailid);*/
-  
-   if(this.state.loginStatus==true){
+
       //  ------------------------------------Login----------------------------
      return(
       <div className="background">
@@ -268,7 +257,7 @@ export default class Login extends React.Component {
         docked={false}
         width={200}
         open={this.state.openDrawer}
-       
+        style={{backgroundColor:"rgb(0, 188, 212)"}}
         onRequestChange={(openDrawer) => this.setState({openDrawer})}
         >
 <center>
@@ -276,15 +265,12 @@ export default class Login extends React.Component {
       style={{width:'100px',height:'100px'}} circle/>
       </center>
       <Divider />
-        <MenuItem onTouchTap={this.handleClose}>
-         <a onTouchTap={this.login}>Login </a>
-        </MenuItem>
-        <MenuItem onTouchTap={this.handleClose}>
-        <a onTouchTap={this.Register}> Register </a>
-        </MenuItem>
-        <MenuItem onTouchTap={this.handleClose}>
-      <a onTouchTap={this.home}> Home </a>
-      </MenuItem>
+      <MenuItem onTouchTap={this.handleClose}>
+          <Link to ="/login">Login</Link>
+          </MenuItem>
+          <MenuItem onTouchTap={this.handleClose}>
+          <Link to ="/verification">Register</Link>
+          </MenuItem>
         
       </Drawer>
        <Grid>
@@ -321,262 +307,6 @@ export default class Login extends React.Component {
        </Grid> 
        </div>
      )
-   }else if(this.state.registerStatus==true){
-    //  ------------------------------------Register-------------------------------
-    let otpMessage;
-    if(this.state.otpWindowStatus==true){
-      otpMessage=[
-    //     <Grid>
-    //     <Row style={{marginRight: "-10px",
-    // marginLeft: "-10px"}}>
-        <div  style={{marginTop:"10px"}}>
-          <p>
-            OTP has sent to your register Mobile Number. Verfiy it
-            </p>
-           
-            <TextField
-       hintStyle={{color:"white"}}
-       inputStyle={{color:"white"}}
-       floatingLabelStyle={{color:"white"}}
-      hintText="Enter OTP"
-      floatingLabelText="OTP"
-      onChange = {(event,newValue) => this.setState({otp:newValue})}
-      fullWidth={true}
-    />
-    <center>
-    <RaisedButton label="Verify OTP" primary={true}  onTouchTap={this.otpVerify}/>
-    </center>
-          </div>
-          // </Row>
-          // </Grid>
-      ]
-    }else{
-      otpMessage=null;
-    }
-    let regisView;
-    // if(this.state.registerViewStatus==true){
-    //   regisView=[
-
-    //   ]
-    // }
-    if(this.state.registerViewStatus==true){
-
-      regisView=[
-    //     <Grid>
-    //  <Row style={{marginRight: "-10px",
-    // marginLeft: "-10px"}}>
-      <div zDepth={2} style={{marginTop:"10px"}}>
-      <center>
-        <h4> Registration Id Genrated Successfully</h4>
-        <h5> S32432134 </h5>
-      </center>
-        <br />
-        <RadioButtonGroup name="shipSpeed" defaultSelected={this.state.lender} onChange={this.radioChange}>
-      <RadioButton
-      labelStyle={{color:"white"}}
-        value="Lender"
-        label="Lender"
-        iconStyle={{color:"white"}}
-      />
-      
-      <RadioButton
-       labelStyle={{color:"white"}}
-        value="Borrower"
-        label="Borrower"
-        iconStyle={{color:"white"}}
-       />
-      </RadioButtonGroup>
-  <br />
-  <div style={{align:"left"}}>
-  <TextField
-   hintStyle={{color:"white"}}
-   inputStyle={{color:"white"}}
-   floatingLabelStyle={{color:"white"}}
-      hintText=" Set Password"
-      onChange = {(event,newValue) => this.setState({jioPassword:newValue})}
-      floatingLabelText="Set password"
-      fullWidth={true}
-    />
-    <br />
-    <br />
-    <RaisedButton style={{borderRadius:'13px'}} label="Submit" primary={true}  onTouchTap={this.registerSuccess} fullWidth={true}/>
-    </div> 
-
-      </div>
-      // </Row>
-      // </Grid>
-      ]
-    }else{
-      regisView=null;
-    }
-     return(
-    <div className="background">
-    <AppBar
-title="Jio Registration"
-iconClassNameRight="muidocs-icon-navigation-expand-more"
-onLeftIconButtonTouchTap={this.handleToggle}
-/>
-
-
- <Drawer
-      docked={false}
-      width={200}
-      open={this.state.openDrawer}
-     
-      onRequestChange={(openDrawer) => this.setState({openDrawer})}
-      >
-<center>
-    <Image src="../images/jiologo.png" 
-    style={{width:'100px',height:'100px'}} circle/>
-    </center>
-    <Divider />
-      <MenuItem onTouchTap={this.handleClose}>
-       <a onTouchTap={this.login}>Login </a>
-      </MenuItem>
-      <MenuItem onTouchTap={this.handleClose}>
-      <a onTouchTap={this.Register}> Register </a>
-      </MenuItem>
-      <MenuItem onTouchTap={this.handleClose}>
-      <a onTouchTap={this.home}> Home </a>
-      </MenuItem>
-      
-      
-    </Drawer>
-    <Grid>
-      
-      
-    <div style={{marginTop: '50px',color:"white"}}>
-    
-   <TextField
- hintText="User Name"
- hintStyle={{color:"white"}}
- inputStyle={{color:"white"}}
- floatingLabelStyle={{color:"white"}}
- hintText="Enter Aadhar Number"
- floatingLabelText="Enter Aadhar Number"
- onChange = {(event,newValue) => this.setState({aadhar:newValue})}
- fullWidth={true}
-/>
-<center>
-
-<RaisedButton label=" Verfiy" primary={true}  onTouchTap={this.aadharLink}/>
-</center>
-
-{otpMessage}
-{regisView}
-
- 
-  </div>
-  
-  </Grid> 
-  </div>
-     )
-   }else{
- 
-    
-      return (
-        
-       
-        <div className="background">
-        <AppBar
-    title="Jio Loan App"
-    iconClassNameRight="muidocs-icon-navigation-expand-more"
-    onLeftIconButtonTouchTap={this.handleToggle}
-  />
-
-
-     <Drawer
-          docked={false}
-          width={200}
-          open={this.state.openDrawer}
-         
-          onRequestChange={(openDrawer) => this.setState({openDrawer})}
-          >
-<center>
-        <Image src="../images/jiologo.png" 
-        style={{width:'100px',height:'100px'}} circle/>
-        </center>
-        <Divider />
-          <MenuItem onTouchTap={this.handleClose}>
-           <a onTouchTap={this.login}>Login </a>
-          </MenuItem>
-          <MenuItem onTouchTap={this.handleClose}>
-          <a onTouchTap={this.Register}> Register </a>
-          </MenuItem>
-          
-          
-        </Drawer>
- 
-        <Carousel>
-  <Carousel.Item >
-    <img width="auto" height={500} alt="900x500" src="../images/jio1.jpg" />
-    
-  </Carousel.Item>
-  <Carousel.Item >
-    <img width="auto" height={500} alt="900x500" src="../images/jio2.png" />
-    
-  </Carousel.Item>
-  <Carousel.Item >
-    <img width="auto" height={500} alt="900x500" src="../images/jio3.jpg" />
-    
-  </Carousel.Item>
-  <Carousel.Item >
-    <img width="auto" height={500} alt="900x500" src="../images/jio4.jpg" />
-    
-  </Carousel.Item>
-</Carousel>
-<Grid>
-  <Row>
-  <div className="panel panel-primary" style={{marginTop:"50px"}}>
-  <div className="panel-heading">Jio Platform</div>
-  <div className="panel-body" style={{fontSize:"16"}}>
-  Reliance MFB is primarily a financial service institution for the unbanked determined to contribute positively to the nation's economic development by facilitating financial inclusion. The Bank is well positioned to support entrepreneurship and empowerment of the economically disadvantaged individuals, micro, small and medium scale enterprises in achieving their financial goals.
-  </div>
-  <div className="panel-footer" style={{backgroundColor:"blue", color:"white"}}>Read More</div>
-</div>
-    </Row>
-</Grid>
-{/*           
-        <Grid>
-        <Row>
-          <Col xs={6}> */}
-{/*         
-        <div style={{marginTop:'100px'}}  > */}
-        {/* <pap style={{height:'300px',width:'500px',backgroundColor:'white',marginTop:'200px'}}> */}
-
-
-        {/* <h2 style={{marginTop: '10px',color:"white"}}>
-        Project Buddies App
-        </h2><br/>
-        <TextField
-      
-      hintText="User Name"
-      hintStyle={{color:"white"}}
-      inputStyle={{color:"white"}}
-      floatingLabelStyle={{color:"white"}}
-      floatingLabelText="Enter User Name"
-      onChange = {(event,newValue) => this.setState({username:newValue})}
-    /><br />
-    <TextField
-      hintText=" Password"
-      inputStyle={{color:"white"}}
-      hintStyle={{color:"white"}}
-      floatingLabelStyle={{color:"white"}}
-      onChange = {(event,newValue) => this.setState({password:newValue})}
-      floatingLabelText="Enter Password"
-    /><br />
-        <div style={{marginTop:"50px"}}>
-        <RaisedButton label="Login" primary={true}  onTouchTap={this.loginClick}/>
-        <RaisedButton label="Registration" secondary={true}  
-        style={{marginLeft:"100px"}}/>
-        </div>
-        </div>
-        </Col>
-       </Row>
-       </Grid> */}
-        </div>
-
-        )
-      }
+   
     }
   }
